@@ -9,11 +9,25 @@
             let city = par.get("city");
             let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`; 
 
+            let distapiKey = "9bq7xopaBYXYcoWcZ03r0290r0jeOKBD6JefpH4snEmaVXRxTZECfMqFECg0hbJK"; // Replace with your OpenWeatherMap API key
+            let userscity = par.get("userscity");
+            let distapiUrl = `https://api.distancematrix.ai/maps/api/distancematrix/json?origins=${city}&destinations=${userscity}&key=${distapiKey}`; 
+
             fetch(apiUrl)
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById("location").textContent = data.name;
+                    document.getElementById("UsersLocation").textContent = data.name;
                     document.getElementById("Temperature").textContent = data.main.temp+ "°C";
+                })
+                .catch(error => console.error("Error fetching weather:", error));
+
+                fetch(distapiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("location").textContent = data.origin_addresses;
+                    document.getElementById("UsersLocation").textContent = data.destination_addresses;
+                    document.getElementById("DistancetoCustomer").textContent = data.rows[0].elements[0].distance.text;
                 })
                 .catch(error => console.error("Error fetching weather:", error));
         }
@@ -23,7 +37,9 @@
 <body>
     <div id="weatherInfo">
         <p>Location: <span id="location"></span></p>
+        <p>Users Location: <span id="UsersLocation"></span></p>
         <p>Temperature: <span id="Temperature"></span></p>
+        <p>Distance to Customer: <span id="DistancetoCustomer"></span></p>
     </div>
 </body>
 </html>
