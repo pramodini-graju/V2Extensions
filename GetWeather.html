@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mashup to get Weather for a location</title>
+    <script>
+        const par = new URLSearchParams(window.location.search);
+        function getWeather() {
+            let apiKey = "800a46bde44b3ac2fc0a19730cc15fca"; // Replace with your OpenWeatherMap API key
+            let city = par.get("city");
+            let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`; 
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("location").textContent = data.name;
+                    document.getElementById("Temperature").textContent = data.main.temp+ "°C";
+                })
+                .catch(error => console.error("Error fetching weather:", error));
+        }
+        getWeather()
+    </script>
+</head>
+<body>
+    <div id="weatherInfo">
+        <p>Location: <span id="location"></span></p>
+        <p>Temperature: <span id="Temperature"></span></p>
+    </div>
+</body>
+</html>
